@@ -53,6 +53,26 @@ require("lazy").setup({
   },
 })
 
+vim.api.nvim_create_autocmd({ "FileType" }, {
+  pattern = { "c", "cpp", "h" },
+  callback = function()
+    vim.b.autoformat = false
+  end,
+})
+
+if string.find(vim.loop.os_uname().sysname, "Windows") then
+  require("telescope").setup({
+    defaults = {
+      vimgrep_arguments = {
+        "fd",
+        "--type",
+        "f",
+        "--hidden",
+      },
+    },
+  })
+end
+
 local builtin = require("telescope.builtin")
 vim.keymap.set("n", "<C-p>", builtin.find_files, {})
 vim.keymap.set("n", "<leader>fg", builtin.live_grep, {})
